@@ -21,3 +21,18 @@ func (s *ReceivedMessage) FillStruct(m map[string]interface{}) error {
 	}
 	return nil
 }
+
+type TotalMessage struct {
+	Used  string
+	Total string
+}
+
+func (s *TotalMessage) FillStruct(m map[string]interface{}) error {
+	for k, v := range m {
+		err := util.SetField(s, k, v)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
