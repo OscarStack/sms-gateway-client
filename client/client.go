@@ -1,12 +1,10 @@
 package client
 
 import (
-	"errors"
 	"fmt"
 	"log"
 	"strings"
 
-	"github.com/OscarStack/sms-gateway-client/models"
 	"github.com/OscarStack/sms-gateway-client/sshclient"
 )
 
@@ -43,26 +41,4 @@ func NewTeltonikaClient(params TeltonikaHost) *TeltonikaClient {
 func (tc *TeltonikaClient) CloseClient() error {
 	fmt.Println("Closed client")
 	return tc.sshClient.Close()
-}
-
-func (tc *TeltonikaClient) SendSms(mobileNumber models.SmsNumber, message string) error {
-
-	if !mobileNumber.Validate() {
-		return errors.New("invalid mobile number")
-	}
-	if len(message) >= 150 {
-		return errors.New("message is to long, only 150 characters are allowed")
-	}
-
-	status, err := tc.sshClient.Cmd(fmt.Sprintf(`gsmctl --sms --send "%s %s"`, mobileNumber, message)).Output()
-	if err != nil {
-		return err
-	}
-	fmt.Println(string(status))
-	switch strings.TrimSpace((string(status))) {
-	case "OK":
-		return nil
-	default:
-		return errors.New("message not send")
-	}
 }

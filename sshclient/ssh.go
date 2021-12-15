@@ -205,6 +205,8 @@ type RemoteShell struct {
 	stdout io.Writer
 	stderr io.Writer
 }
+
+// A TerminalConfig represents the configuration for an interactive shell session.
 type TerminalConfig struct {
 	Term   string
 	Height int
